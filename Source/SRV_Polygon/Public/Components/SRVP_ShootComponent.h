@@ -35,11 +35,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Shoot")
 	bool bIsProjectileFire;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shoot")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Shoot")
 	float BulletSpread;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Projectile")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Projectile")
 	TSubclassOf<class ASRVP_ProjectileBase> ProjectileClass;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Damage")
+	float Damage;
 
 protected:
 	// Called when the game starts

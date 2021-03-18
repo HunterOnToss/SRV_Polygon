@@ -7,6 +7,7 @@
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Components/DecalComponent.h"
 #include "Engine/DecalActor.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ASRVP_ProjectileBase::ASRVP_ProjectileBase()
@@ -33,13 +34,16 @@ ASRVP_ProjectileBase::ASRVP_ProjectileBase()
 	DecalSize = 24.0f;
 
 	InitialLifeSpan = 3.0f;
+
+	Damage = 10;
 }
 
 void ASRVP_ProjectileBase::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	FVector NormalImpulse, const FHitResult& Hit)
 {
 	MakeDecal(Hit);
-	
+
+	UGameplayStatics::ApplyDamage(OtherActor, Damage, nullptr, GetOwner(), nullptr);
 	// Only add impulse and destroy projectile if we hit a physics
 	if ((OtherActor != NULL) && (OtherActor != this) && (OtherComp != NULL) && OtherComp->IsSimulatingPhysics())
 	{

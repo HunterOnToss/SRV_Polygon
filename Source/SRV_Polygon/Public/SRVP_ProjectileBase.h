@@ -23,8 +23,11 @@ class SRV_POLYGON_API ASRVP_ProjectileBase : public AActor
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Stat", meta=(AllowPrivateAccess="true"))
 	float DecalSize;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Stat", meta = (AllowPrivateAccess="true"))
 	UMaterial* BulletHole;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Stat", meta = (AllowPrivateAccess="true"))
+	float Damage;
 	
 public:	
 	// Sets default values for this actor's properties
@@ -40,5 +43,4 @@ public:
 	FORCEINLINE class UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
 	
 	bool IsMakeFirstStrike = false;
-
 };

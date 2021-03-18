@@ -4,6 +4,9 @@
 #include "Components/SRVP_ShootComponent.h"
 #include "DrawDebugHelpers.h"
 #include "SRVP_ProjectileBase.h"
+#include "Kismet/GameplayStatics.h"
+
+class ASRVP_ProjectileBase;
 
 
 // Sets default values for this component's properties
@@ -57,6 +60,8 @@ void USRVP_ShootComponent::LineTraceShoot()
 	FVector const End = Start + (Rotation * RangeOfTraceFire);
 	
 	Hit = TraceForward(Start, End);
+
+	
 	
 }
 
@@ -69,7 +74,7 @@ void USRVP_ShootComponent::ProjectileShoot()
 		params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 		FTransform t = GetProjectileTransform();
 
-		AActor* projectile = GetWorld()->SpawnActor(ProjectileClass, &t, params);
+		AActor* projectile = GetWorld()->SpawnActor(ProjectileClass, &t, params);		
 	}
 }
 
@@ -85,8 +90,9 @@ FHitResult USRVP_ShootComponent::TraceForward_Implementation(FVector StartLocati
 	if (bHit)
 	{
 		DrawDebugBox(GetWorld(), Hit.ImpactPoint, FVector(5,5,5), FColor::Emerald, false, 2.0f);
+		UGameplayStatics::ApplyDamage(Hit.GetActor(), Damage, nullptr, GetOwner(), nullptr);
 	}
-
+	
 	return Hit;
 }
 
