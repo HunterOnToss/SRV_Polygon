@@ -3,6 +3,8 @@
 
 #include "Components/SRVP_ShootComponent.h"
 #include "DrawDebugHelpers.h"
+#include "SRVP_ProjectileBase.h"
+
 
 // Sets default values for this component's properties
 USRVP_ShootComponent::USRVP_ShootComponent()
@@ -15,6 +17,7 @@ USRVP_ShootComponent::USRVP_ShootComponent()
 
 	bIsTraceFire = false;
 	bIsProjectileFire = false;
+	BulletSpread = 1.0f;
 
 }
 
@@ -30,7 +33,7 @@ void USRVP_ShootComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
+
 }
 
 void USRVP_ShootComponent::OnShoot()
@@ -59,7 +62,15 @@ void USRVP_ShootComponent::LineTraceShoot()
 
 void USRVP_ShootComponent::ProjectileShoot()
 {
-	
+	if (ProjectileClass)
+	{
+		FActorSpawnParameters params;
+
+		params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		FTransform t = GetProjectileTransform();
+
+		AActor* projectile = GetWorld()->SpawnActor(ProjectileClass, &t, params);
+	}
 }
 
 FHitResult USRVP_ShootComponent::TraceForward_Implementation(FVector StartLocation, FVector EndLocation)
@@ -77,5 +88,29 @@ FHitResult USRVP_ShootComponent::TraceForward_Implementation(FVector StartLocati
 	}
 
 	return Hit;
+}
+
+FTransform USRVP_ShootComponent::GetProjectileTransform() const
+{
+	return FTransform(GetProjectileRotation(), GetProjectileTranslation(GetProjectileRotation()), FVector::OneVector);
+}
+
+FVector USRVP_ShootComponent::GetProjectileTranslation(FRotator ProjectileRotation) const
+{
+	return Location;
+}
+
+FRotator USRVP_ShootComponent::GetProjectileRotation() const
+{
+	const float randomPitch = FMath::FRandRange(-BulletSpread, BulletSpread);
+	const float randomYaw = FMath::FRandRange(-BulletSpread, BulletSpread);
+	const float randomRoll = FMath::FRandRange(-BulletSpread, BulletSpread);
+
+	const FRotator fireRotation = FRotator(randomPitch, randomYaw, randomRoll);
+
+	const FRotator spawnRotation = Rotation.Rotation();
+	const FRotator projectileRotation = spawnRotation + fireRotation;
+
+	return projectileRotation;
 }
 

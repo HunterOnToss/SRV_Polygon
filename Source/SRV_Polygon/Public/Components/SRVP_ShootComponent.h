@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "SRVP_ShootComponent.generated.h"
 
+class ASRVP_ProjectileBase;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SRV_POLYGON_API USRVP_ShootComponent : public UActorComponent
@@ -34,8 +35,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Shoot")
 	bool bIsProjectileFire;
 
-	//UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Shoot")
-	//TSubclassOf<class AProjectile> ProjectileClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shoot")
+	float BulletSpread;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Projectile")
+	TSubclassOf<class ASRVP_ProjectileBase> ProjectileClass;
 
 protected:
 	// Called when the game starts
@@ -53,5 +57,13 @@ protected:
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-		
+
+private:
+
+	FTransform GetProjectileTransform() const;
+
+	FVector GetProjectileTranslation(FRotator ProjectileRotation) const;
+
+	FRotator GetProjectileRotation() const;
+	
 };
