@@ -19,8 +19,14 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void OnShoot();
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="LineTrace")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="LineTrace")
 	float RangeOfTraceFire;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="LineTrace")
+	FVector Location;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="LineTrace")
+	FVector Rotation;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Shoot")
 	bool bIsTraceFire;
@@ -47,10 +53,5 @@ protected:
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-	
-private:
-
-	APawn* _player;
 		
 };

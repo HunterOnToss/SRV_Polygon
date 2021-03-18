@@ -2,7 +2,6 @@
 
 
 #include "Components/SRVP_ShootComponent.h"
-
 #include "DrawDebugHelpers.h"
 
 // Sets default values for this component's properties
@@ -12,24 +11,18 @@ USRVP_ShootComponent::USRVP_ShootComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	_player = Cast<APawn>(GetOwner());
-
 	RangeOfTraceFire = 10000.0f;
 
 	bIsTraceFire = false;
 	bIsProjectileFire = false;
-	
-	// ...
+
 }
 
 
 // Called when the game starts
 void USRVP_ShootComponent::BeginPlay()
 {
-	Super::BeginPlay();
-
-	// ...
-	
+	Super::BeginPlay();	
 }
 
 // Called every frame
@@ -55,14 +48,10 @@ void USRVP_ShootComponent::OnShoot()
 
 void USRVP_ShootComponent::LineTraceShoot()
 {
-	FVector Location;
-	FRotator Rotation;
 	FHitResult Hit;
 
-	_player->GetController()->GetPlayerViewPoint(Location, Rotation);
-
 	FVector const Start = Location;
-	FVector const End = Start + (Rotation.Vector() * RangeOfTraceFire);
+	FVector const End = Start + (Rotation * RangeOfTraceFire);
 	
 	Hit = TraceForward(Start, End);
 	
